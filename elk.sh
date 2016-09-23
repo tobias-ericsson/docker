@@ -1,5 +1,6 @@
 #!/bin/sh
 create() {
+  #-v "$PWD/config":/usr/share/elasticsearch/config \
   #https://hub.docker.com/_/logstash/
   #docker run --name d-logstash -it -v "$PWD/logstash":/config-dir -d logstash logstash -f /config-dir/logstash.conf
 
@@ -7,13 +8,14 @@ create() {
   docker run --name d-elasticsearch --restart=always \
          -v "$PWD/elasticsearch/data":/usr/share/elasticsearch/data \
          -v /etc/localtime:/etc/localtime \
-         -p 9200:9200 -p 9300:9300 -d elasticsearch
+         -p 9200:9200 -p 9300:9300 --security-opt seccomp=unconfined -e ES_JAVA_OPTS="-Xms1g -Xmx1g" -d elasticsearch:5
+         #-p 9200:9200 -p 9300:9300 --security-opt seccomp=unconfined -e ES_JAVA_OPTS="-Xms1g -Xmx1g" -d elasticsearch:5
 
    #https://hub.docker.com/_/kibana/
    docker run --name d-kibana --restart=always \
          --link d-elasticsearch:elasticsearch \
          -v /etc/localtime:/etc/localtime \
-         -p 5601:5601 -d kibana
+         -p 5601:5601 -d kibana:5
 }
 
 start() {
