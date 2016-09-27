@@ -1,0 +1,5 @@
+
+botstrap.memory_lock: true
+cluster.name: RedBaron
+node.name: ${HOSTNAME}
+
