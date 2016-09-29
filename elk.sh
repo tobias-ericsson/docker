@@ -3,10 +3,10 @@ create() {
   #-v "$PWD/config":/usr/share/elasticsearch/config \
   
   #https://hub.docker.com/_/logstash/
-  docker run --name d-logstash --restart=always \
-	 -v "$PWD":/config \
-         -v /etc/localtime:/etc/localtime \
-	 -d logstash:5 -f /config/logstash.conf
+  #docker run --name d-logstash --restart=always \
+#	 -v "$PWD/config":/config \
+#        -v /etc/localtime:/etc/localtime \
+#	 -d logstash:5 -f /config/logstash.conf
 
   #https://hub.docker.com/_/elasticsearch/
   docker run --name d-elasticsearch --restart=always \
@@ -23,30 +23,30 @@ create() {
 }
 
 start() {
-        docker start d-logstash
+        #docker start d-logstash
         docker start d-elasticsearch
         docker start d-kibana
 }
 
 stop() {
-        docker stop d-logstash
+        #docker stop d-logstash
         docker stop d-kibana
         docker stop d-elasticsearch
 }
 
-destroy() {
-        docker rm d-logstash
+rm() {
+        #docker rm d-logstash
         docker rm d-kibana
         docker rm d-elasticsearch
 }
 
 case "$1" in
     create)  create ;;
-    destroy) destroy ;;
+    rm) rm ;;
     start)   start ;;
     stop)    stop ;;
     restart) stop; start ;;
-    *) echo "usage: $0 create|destroy|start|stop|restart" >&2
+    *) echo "usage: $0 create|rm|start|stop|restart" >&2
        exit 1
     ;;
 esac
