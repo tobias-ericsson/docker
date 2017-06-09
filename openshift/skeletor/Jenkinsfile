@@ -1,0 +1,23 @@
+pipeline {
+  agent { }
+  stages {
+    stage('Clone repository') {
+      steps {
+        echo 'Checkout'
+        checkout scm
+      }
+    }
+    stage('Build application') {
+      steps {
+        echo 'Build'
+        sh 'gradlew build'
+      }
+    }
+    stage('Test application') {
+      steps {
+        echo 'Test'
+        sh 'gradlew test'
+      }
+    }
+  }
+}
