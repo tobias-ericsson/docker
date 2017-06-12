@@ -10,12 +10,14 @@ pipeline {
     stage('Build application') {
       steps {
         echo 'Build'
+        sh 'pwd'
         sh './gradlew build'
       }
     }
     stage('Test application') {
       steps {
         echo 'Test'
+        sh 'pwd'
         sh './gradlew test'
       }
     }
