@@ -4,7 +4,6 @@ pipeline {
     stage('Clone repository') {
       steps {
         echo 'Checkout'
-        #checkout scm
       }
     }
     stage('Build application') {
