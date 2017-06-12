@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: List
+metadata: {}
+items:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: pipeline-config
+  spec:
+    source:
+      type: Git
+      git:
+        ref: pipeline
+        uri: https://github.com/tobias-ericsson/docker.git
+    strategy:
+      type: JenkinsPipeline
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: openshift/skeletor/Jenkinsfile
+    triggers:
+        - type: ConfigChange
