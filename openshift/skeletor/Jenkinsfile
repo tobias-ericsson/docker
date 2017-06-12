@@ -1,24 +1,26 @@
 pipeline {
   agent any
-  stages {
-    stage('Clone repository') {
-      steps {
-        echo 'Checkout'
-        checkout scm
+  dir ('openshift/skeletor') {
+    stages {
+      stage('Clone repository') {
+        steps {
+          echo 'Checkout'
+          checkout scm
+        }
       }
-    }
-    stage('Build application') {
-      steps {
-        echo 'Build'
-        sh 'pwd'
-        sh './gradlew build'
+      stage('Build application') {
+        steps {
+          echo 'Build'
+          sh 'pwd'
+          sh './gradlew build'
+        }
       }
-    }
-    stage('Test application') {
-      steps {
-        echo 'Test'
-        sh 'pwd'
-        sh './gradlew test'
+      stage('Test application') {
+        steps {
+          echo 'Test'
+          sh 'pwd'
+          sh './gradlew test'
+        }
       }
     }
   }
