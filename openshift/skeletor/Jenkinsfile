@@ -1,7 +1,7 @@
 pipeline {
   agent any
-  dir ('openshift/skeletor') {
-    stages {
+  stages {
+    dir ('openshift/skeletor') {
       stage('Clone repository') {
         steps {
           echo 'Checkout'
