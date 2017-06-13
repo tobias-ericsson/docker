@@ -11,6 +11,19 @@ pipeline {
         echo 'Checkout'
       }
     }
+    stage('Build docker image') {
+      steps {
+        dir ('openshift/skeletor') {
+          echo 'Docker Build'
+          //sh 'docker build -t test .'
+          script {
+            docker.withTool("docker") {
+              docker.build 'skeletor'
+            }
+          }
+        }
+      }
+    }
     stage('Build application') {
       steps {
         dir ('openshift/skeletor') {
