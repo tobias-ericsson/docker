@@ -34,7 +34,7 @@ pipeline {
         dir ('openshift/skeletor') {
           echo 'Docker Build'
           sh 'pwd'
-          docker.build("devops/skeletor:${env.BUILD_NUMBER}")
+          docker.build("devops/skeletor")
         }
       }
     }
