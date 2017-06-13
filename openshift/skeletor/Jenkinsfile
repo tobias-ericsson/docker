@@ -34,7 +34,9 @@ pipeline {
         dir ('openshift/skeletor') {
           echo 'Docker Build'
           docker.image('docker').inside {
-            docker build -t skeletor .
+            stage ('test') {
+              sh 'docker build -t skeletor .'
+            }
           }
           //docker.build 'skeletor'
         }
