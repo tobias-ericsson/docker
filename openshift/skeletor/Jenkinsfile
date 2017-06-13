@@ -17,7 +17,7 @@ pipeline {
           echo 'Docker Build'
           //sh 'docker build -t test .'
           script {
-            docker.withTool("docker") {
+            docker.withTool("Docker") {
               docker.build 'skeletor'
             }
           }
