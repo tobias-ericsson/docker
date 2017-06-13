@@ -29,6 +29,16 @@ pipeline {
         }
       }
     }
+    stage('Build docker image') {
+      agent docker
+      steps {
+        dir ('openshift/skeletor') {
+          echo 'Docker Build'
+          sh 'pwd'
+          sh 'docker build -t skeletor'
+        }
+      }
+    }
     stage('Deploy application') {
       steps {
         dir ('openshift/skeletor') {
