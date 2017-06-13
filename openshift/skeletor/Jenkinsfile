@@ -30,7 +30,9 @@ pipeline {
       }
     }
     stage('Build docker image') {
-      agent docker
+      agent {
+        label 'docker'
+      }
       steps {
         dir ('openshift/skeletor') {
           echo 'Docker Build'
