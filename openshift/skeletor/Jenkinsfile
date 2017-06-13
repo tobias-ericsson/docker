@@ -31,10 +31,7 @@ pipeline {
     }
     stage('Build docker image') {
       agent {
-        dockerfile {
-          filename "openshift/skeletor/Dockerfile"
-          args "-p 8080:8080"
-        }
+        dockerfile true
       }
       steps {
         dir ('openshift/skeletor') {
