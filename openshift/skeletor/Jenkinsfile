@@ -33,8 +33,7 @@ pipeline {
       steps {
         dir ('openshift/skeletor') {
           echo 'Docker Build'
-          sh 'pwd'
-          docker.build("skeletor")
+          docker.build 'skeletor'
         }
       }
     }
