@@ -5,7 +5,7 @@ items:
 - apiVersion: v1
   kind: BuildConfig
   metadata:
-    name: skeletor-pipeline
+    name: skeletor.yml-pipeline
   spec:
     source:
       type: Git
@@ -15,6 +15,6 @@ items:
     strategy:
       type: JenkinsPipeline
       jenkinsPipelineStrategy:
-        jenkinsfilePath: openshift/skeletor/Jenkinsfile
+        jenkinsfilePath: openshift/skeletor.yml/Jenkinsfile
     triggers:
         - type: ConfigChange
