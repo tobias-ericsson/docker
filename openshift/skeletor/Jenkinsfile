@@ -1,7 +1,11 @@
 pipeline {
-  agent any
+  agent {
+    label 'maven'
+  }
   tools {
-    jdk 'jdk8'
+  }
+  environment {
+    FOO = "BAR"
   }
   stages {
     stage('Clone repository') {
