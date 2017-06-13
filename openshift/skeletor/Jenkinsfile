@@ -33,7 +33,7 @@ pipeline {
       steps {
         dir ('openshift/skeletor') {
           echo 'Docker Build'
-          sh s2i create lighttpd-centos7 s2i-lighttpd
+          sh 's2i create lighttpd-centos7 s2i-lighttpd'
           //docker.build 'skeletor'
         }
       }
