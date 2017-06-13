@@ -29,6 +29,15 @@ pipeline {
         }
       }
     }
+    stage('Deploy application') {
+      steps {
+        dir ('openshift/skeletor') {
+          echo 'Deploy'
+          sh 'pwd'
+          sh 'oc apply -f openshift'
+        }
+      }
+    }
   }
   post {
     always {
