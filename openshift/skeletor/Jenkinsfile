@@ -17,7 +17,7 @@ node ('maven') {
   stage('Build docker image') {
     dir ('openshift/skeletor') {
       echo 'Docker Build'
-      sh "oc start-build skeletor-image --from-file=build/libs/skeletor-1.0.jar --follow"
+      sh "oc start-build skeletor-s2i-image --from-file=build/libs/skeletor-1.0.jar --follow"
     }
   }
 }
