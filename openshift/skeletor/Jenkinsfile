@@ -1,4 +1,4 @@
-node {
+node ('maven') {
   stage('Build application') {
     dir ('openshift/skeletor') {
       echo 'Build'
