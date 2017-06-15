@@ -1,11 +1,11 @@
 node ('maven') {
   stage('Build application') {
-    dir ('openshift/skeletor') {
+
       echo 'Build'
       sh 'pwd'
-      sh 'ls'
+      sh 'ls -la'
       sh './gradlew build'
-    }
+
   }
   stage('Test application') {
     dir ('openshift/skeletor') {
