@@ -1,72 +1,20 @@
-pipeline {
-  agent {
-    label 'maven'
-  }
-  environment {
-    FOO = "BAR"
-  }
-  stages {
-    stage('Clone repository') {
-      steps {
-        echo 'Checkout'
-      }
-    }
-    stage('test docker') {
-      steps {
-        dir ('openshift/skeletor') {
-          echo 'Docker Build'
-          //sh 'docker build -t test .'
-          script {
-            //docker.withTool("Docker") {
-              //docker.build 'skeletor'
-            //}
-          }
-        }
-      }
-    }
-    stage('Build application') {
-      steps {
-        dir ('openshift/skeletor') {
-          echo 'Build'
-          sh 'pwd'
-          sh './gradlew build'
-        }
-      }
-    }
-    stage('Test application') {
-      steps {
-        dir ('openshift/skeletor') {
-          echo 'Test'
-          sh 'pwd'
-          sh './gradlew test'
-        }
-      }
-    }
-    stage('Build docker image') {
-      steps {
-        dir ('openshift/skeletor') {
-          echo 'Docker Build'
-          sh "oc start-build skeletor-image --from-file=build/libs/skeletor-1.0.jar --follow"
-          //sh 'docker build -t test .'
-          //script {
-          //  docker.build 'skeletor'
-          //}
-        }
-      }
-    }
-    stage('Deploy application') {
-      steps {
-        dir ('openshift/skeletor') {
-          echo 'Deploy'
-          sh 'pwd'
-          sh 'oc apply -f openshift'
-        }
-      }
+node {
+  stage('Build application') {
+    dir ('openshift/skeletor') {
+      echo 'Build'
+      sh './gradlew build'
     }
   }
-  post {
-    always {
-      echo 'Bye bye'
+  stage('Test application') {
+    dir ('openshift/skeletor') {
+      echo 'Test'
+      sh './gradlew test'
+    }
+  }
+  stage('Build docker image') {
+    dir ('openshift/skeletor') {
+      echo 'Docker Build'
+      sh "oc start-build skeletor-image --from-file=build/libs/skeletor-1.0.jar --follow"
     }
   }
 }
