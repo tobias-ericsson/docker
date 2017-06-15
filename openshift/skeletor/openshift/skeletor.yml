@@ -1,0 +1,162 @@
+apiVersion: v1
+kind: List
+metadata: {}
+items:
+
+### IMAGESTREAMS
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: openjdk18-openshift-s2i
+  spec:
+    dockerImageRepository: "registry.access.redhat.com/redhat-openjdk-18/openjdk18-openshift"
+
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: skeletor
+    labels:
+      application: skeletor
+  spec:
+    tags:
+    - name: latest
+
+### BUILDCONFIGS
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: skeletor-image
+    labels:
+      application: skeletor
+  spec:
+    output:
+      to:
+        kind: ImageStreamTag
+        name: skeletor:latest
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: openjdk18-openshift-s2i:latest
+        incremental: true
+      type: Source
+
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: skeletor-pipeline
+  spec:
+    source:
+      type: Git
+      git:
+        ref: refs/heads/master
+        uri: https://github.com/tobias-ericsson/docker.git
+    strategy:
+      type: JenkinsPipeline
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: openshift/skeletor/Jenkinsfile
+    triggers:
+        - type: ConfigChange
+
+### DEPLOYMENTCONFIGS
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    name: skeletor-deployment
+    labels:
+      application: skeletor
+  spec:
+    replicas: 1
+    selector:
+      deploymentconfig: skeletor-deployment
+    strategy:
+      resources: {}
+      type: Recreate
+    template:
+      metadata:
+        labels:
+          application: skeletor
+          deploymentconfig: skeletor-deployment
+        name: skeletor
+      spec:
+        containers:
+        - name: skeletor
+          image: skeletor
+          imagePullPolicy: Always
+          resources:
+            limits:
+              memory: 512Mi
+          livenessProbe:
+            httpGet:
+              path: /check
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            timeoutSeconds: 3
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /check/health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 3
+            timeoutSeconds: 3
+            periodSeconds: 10
+            successThreshold: 1
+            failureThreshold: 3
+
+    triggers:
+    - imageChangeParams:
+        automatic: true
+        containerNames:
+        - skeletor
+        from:
+          kind: ImageStreamTag
+          name: skeletor:latest
+      type: ImageChange
+    - type: ConfigChange
+
+### SERVICES
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      app: skeletor
+      application: skeletor
+    name: skeletor
+  spec:
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      deploymentconfig: skeletor-deployment
+
+### ROUTES
+- apiVersion: v1
+  kind: Route
+  metadata:
+    labels:
+      application: skeletor
+    name: skeletor
+  spec:
+    to:
+      kind: Service
+      name: skeletor
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
