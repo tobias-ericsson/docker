@@ -25,7 +25,7 @@ items:
 - apiVersion: v1
   kind: BuildConfig
   metadata:
-    name: skeletor-image
+    name: skeletor-s2i-image
     labels:
       application: skeletor
   spec:
@@ -34,12 +34,31 @@ items:
         kind: ImageStreamTag
         name: skeletor:latest
     strategy:
+      type: Source
       sourceStrategy:
         from:
           kind: ImageStreamTag
           name: openjdk18-openshift-s2i:latest
         incremental: true
-      type: Source
+
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    name: skeletor-docker-image
+    labels:
+      application: skeletor
+  spec:
+    source:
+     type: dockerfile
+     dockerfile: "this buildconfig doesnt work yet"
+    output:
+      to:
+        kind: ImageStreamTag
+        name: skeletor:latest
+    strategy:
+      type: Docker
+      dockerStrategy:
+        dockerFilePath: openshift/skeletor/DockerFile
 
 - apiVersion: v1
   kind: BuildConfig
