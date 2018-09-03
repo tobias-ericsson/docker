@@ -4,12 +4,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.toer</groupId>
-	<artifactId>endpoint</artifactId>
+	<artifactId>producer</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>endpoint</name>
-	<description>Endpoint</description>
+	<name>producer</name>
+	<description>Producer</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

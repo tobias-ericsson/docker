@@ -1,4 +1,4 @@
-package com.toer.endpoint;
+package com.toer.producer;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
