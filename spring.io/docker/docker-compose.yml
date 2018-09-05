@@ -37,6 +37,9 @@ services:
       - "MAX_HEAP_SIZE=256M"
       - "HEAP_NEWSIZE=128M"
     restart: always
+    volumes:
+      - ./cassandra-init.sh:/docker-entrypoint2.sh:ro
+    command: /docker-entrypoint2.sh
     ports:
       - 7199:7199
       - 9042:9042
@@ -48,12 +51,16 @@ services:
       - "CASSANDRA_PORT=9042"
       - "HOST_PORT:80"
     restart: always
+    depends_on:
+      - "cassandra"
     ports:
       - 8092:8083
 
   adminer:
     image: adminer
     restart: always
+    depends_on:
+      - "mysql"
     ports:
       - 8090:8080
 

@@ -16,4 +16,6 @@ Actuator Endpoints:
 
 mysql:
 
-mysql -h 127.0.0.1 -P 3306 -u root -p 
+mysql -h 127.0.0.1 -P 3306 -u root -p
+
+create keyspace javasampleapproach with replication={'class':'SimpleStrategy', 'replication_factor':1};
