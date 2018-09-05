@@ -2,13 +2,12 @@ package com.toer.producer.web;
 
 import com.toer.producer.amqp.Sender;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -19,29 +18,35 @@ public class WebController {
     @Autowired
     Sender sender;
 
-    @RequestMapping(method=GET)
+    @RequestMapping(method = GET)
     public String root() {
 
         String pre = "<p><a href='";
         String post = "</p>";
 
-        List<String> urls = new ArrayList<String>();
-        urls.add("/send?message=test");
-        urls.add("http://localhost:15672");
+        Map<String, String> urls = new HashMap<>();
 
-        String result = urls.stream().
-                map(url -> pre+url+"'/>"+url+post).
-                reduce("", (a,b) -> a + b);
+        urls.put("/send?message=test", "send");
+        urls.put("http://localhost:8081", "receiver");
+        urls.put("http://localhost:8082", "cassandra");
+        urls.put("http://localhost:8090", "adminer");
+        urls.put("http://localhost:8091", "cadviser");
+        urls.put("http://localhost:8092", "cassandra-web");
+        urls.put("http://localhost:15672", "rabbitMQ");
 
-        return "<body>"+result+"</body>";
+        String result = urls.entrySet().stream().
+                map(url -> pre + url.getKey() + "'/>" + url.getValue() + post).
+                reduce("", (a, b) -> a + b);
+
+        return "<body>" + result + "</body>";
     }
 
-    @RequestMapping(method=GET, value = "send")
+    @RequestMapping(method = GET, value = "send")
     public String producer(@RequestParam("message") String message) {
 
         sender.sendMessage(message);
 
-        return "produced: "+message;
+        return "produced: " + message;
     }
 
 }
