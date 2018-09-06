@@ -14,7 +14,7 @@ public class MessageRepository {
     private JdbcTemplate jdbcTemplate;
 
     private static final String SQL = "select * from messages";
-    final String INSERT_QUERY = "insert into messages (title, body, date) values (?, ?)";
+    final String INSERT_QUERY = "insert into messages (title, body, date) values (?, ?, ?)";
 
     public List<Map<String, Object>> findAll() {
         return jdbcTemplate.queryForList(SQL);
