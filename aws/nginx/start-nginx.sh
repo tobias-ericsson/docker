@@ -2,6 +2,11 @@
 
 docker stop nginx
 docker rm nginx
+
+cd ~/nginx/html
+git pull
+cd -
+
 docker run --name nginx -d --network="host" --read-only \
   -v $(pwd)/nginx-cache:/var/cache/nginx \
   -v $(pwd)/nginx-pid:/var/run \
