@@ -13,3 +13,15 @@ https://eu-central-1.console.aws.amazon.com/vpc/home?region=eu-central-1#Address
 ### NGINX
 
 ./aws/deployaws.sh
+
+
+### Lets encrypt
+(start-certbot.sh can be run multiple times and will renew cert if needed but need to restart nginx I think)
+
+(running certbot check on the first of every month)
+crontab -e
+
+0 0 1 * * /home/ec2-user/nginx/start-certbot.sh
+0 1 1 * * /home/ec2-user/nginx/start-nginx.sh
+
+
