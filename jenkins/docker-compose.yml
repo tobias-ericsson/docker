@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  jenkins:
+    build: .
+    ports:
+      - 8080:8080
+      - 50000:50000
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - ./jenkins.yaml:/var/jenkins_home/jenkins.yaml
+    environment:
+      - CASC_JENKINS_CONFIG=/var/jenkins_home/jenkins.yaml #Use a github repo.  Be aware that the raw content is cached, so it can take a couple of minutes to take effect
+volumes:
+  jenkins_home:
